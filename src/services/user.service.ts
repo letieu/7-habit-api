@@ -1,5 +1,5 @@
 import { RegisterDTO } from '../dtos/user.dto'
-import { User, IUser } from '../models/user.models'
+import { User, IUser } from '../models/user.model'
 import {BadRequest} from '../utils/error'
 import * as bcrypt from 'bcrypt'
 

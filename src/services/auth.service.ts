@@ -1,5 +1,5 @@
 import { LoginDTO, RefreshDTO } from '../dtos/user.dto'
-import { User } from '../models/user.models'
+import { User } from '../models/user.model'
 import { BadRequest } from '../utils/error'
 import { getTokens, verify } from '../utils/jwt.utils'
 

@@ -32,4 +32,29 @@ router.get('/', authJwt, async (req, res, next) => {
     }
 }) 
 
+router.put('/:id', authJwt, async (req, res, next) => {
+    try {
+        const updateDto = await validateDTO(
+            CreateCategoryDTO,
+            {
+                user_id: req.user.id,
+                ...req.body
+            }
+        )
+        const category = await categoryService.update(updateDto, req.params.id)
+        res.json(category)
+    } catch (e) {
+        next(e)
+    }
+})
+
 export default router
+
+router.delete('/:id', authJwt, async (req, res, next) => {
+    try {
+        const result = await categoryService.remove(req.params.id, req.user.id)
+        res.json(result)
+    } catch (e) {
+        next(e)
+    }
+} )

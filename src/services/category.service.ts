@@ -18,4 +18,14 @@ export class CategoryService extends Service{
         const categories = await this.model.find({ users: id })
         return categories
     }
+
+    async update(payload: CreateCategoryDTO, id: string): Promise<ICategory> {
+        const category = await this.model.findByIdAndUpdate(id, payload, { new: true }).exec()
+        return category
+    }
+
+    async remove(id: string, userId: string): Promise<boolean> {
+        return await this.model.deleteOne({ _id: id,  users: { $elemMatch: { $eq: userId } } })
+    }
+
 }

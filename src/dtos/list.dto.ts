@@ -7,3 +7,11 @@ export class CreateListDTO {
     
     color: string
 }
+
+export class UpdateListDTO {
+    @IsNotEmpty()
+    @IsDefined()
+    name: string
+
+    color: string
+}

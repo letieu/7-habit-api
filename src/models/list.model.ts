@@ -9,7 +9,7 @@ export const listSchema = new Schema({
     },
     color: {
         type: String,
-        enum: ['red', 'green', 'yellow', 'blue'],
+        enum: ['red', 'green', 'yellow', 'blue', 'white'],
         default: 'green'
     },
     category: {

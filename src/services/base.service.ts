@@ -20,7 +20,7 @@ export abstract class Service {
         return await this.model.find({})
     }
 
-    async update(dto: any): Promise<Model<any>> {
+    async update(dto: any, ...args): Promise<Document> {
         return await this.model.update(dto)
     }
 }

@@ -18,11 +18,22 @@ export class GeneralError extends Error {
 }
 
 export class BadRequest extends GeneralError {}
+
 export class NotFound extends GeneralError {}
+
 export class ValidateError extends BadRequest {
-    validate: any 
+    errors: any 
     constructor(validateData: ValidationError[]) {
         super('validate error')
-        this.validate = validateData.map(item => ({ field: item.property, error: item.constraints }))
+        const validate = validateData.map(item => ({ field: item.property, error: item.constraints }))
+        let errors = {}
+
+        validate.forEach(field => {
+          const key = field.field
+          const body: string[] = Object.values(field.error) 
+          errors[key] = body
+        }) 
+
+        this.errors = errors
     }
 }

@@ -1,32 +1,25 @@
-import { LoginDTO, RefreshDTO } from '../dtos/user.dto'
+import { LoginDTO } from '../dtos/user.dto'
 import { User } from '../models/user.model'
-import { BadRequest } from '../utils/error'
-import { getTokens, verify } from '../utils/jwt.utils'
+import { BadRequest } from '../core/error'
+import { getTokens } from '../utils/jwt.utils'
+import { ResAuth } from '../types/user.type'
 
 export class AuthService {
     public model = User
 
-    async login(loginDto: LoginDTO) {
-        const user = await this.model.findOne({ username: loginDto.username })
+    async login(loginDto: LoginDTO): Promise<ResAuth> {
+        const user = await this.model.findOne({ email: loginDto.email })
         if (!user) throw new BadRequest('credential not match')
 
         const match = await user.checkPass(loginDto.password)
         if (!match) throw new BadRequest('credential not match')
 
-        const tokens = getTokens(user._id, user.username)
+        const access_token = getTokens(user._id)
         return {
-            user: user,
-            ...tokens
+            ...user.toJSON(),
+            token: access_token 
         }
-    }
-
-    async refresh(refreshDto: RefreshDTO) {
-        const user = verify(refreshDto.refresh_token) 
-        if (user.username !== refreshDto.username) {
-            throw new BadRequest('token not match')
-        }
-
-        const tokens = getTokens(user.id, user.username)
-        return tokens
     }
 }
+
+export const authService = new AuthService()

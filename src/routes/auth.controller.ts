@@ -1,41 +1,34 @@
 import { Router } from 'express'
-import { LoginDTO, RefreshDTO, RegisterDTO } from '../dtos/user.dto'
+import { LoginDTO, RegisterDTO } from '../dtos/user.dto'
 import { authJwt } from '../middlewares'
-import { UsersService, AuthService } from '../services'
-import { validateDTO } from '../utils/validate'
+import { usersService, authService } from '../services'
+import { validateDTO } from '../core/validate'
 import { Controller } from '../core/controller'
-import { Request, Response } from 'express'
-
-const userService = new UsersService()
-const authServie = new AuthService()
-// need export instance instead Class
+import { Request } from 'express'
+import {IUser, ResAuth} from '../types/user.type'
 
 const router = Router()
 
 router.post('/login',
   Controller( async (req: Request) => {
-    const loginDto = await validateDTO(LoginDTO, req.body)
-    return await authServie.login(loginDto)
+    const loginDto = await validateDTO(LoginDTO, req.body.user)
+    const user: ResAuth = await authService.login(loginDto)
+    return { user }
   }, 200)
 )
 
 router.post('/register',
   Controller( async (req: Request) => {
-    const userDto = await validateDTO(RegisterDTO, req.body)
-    return await userService.create(userDto)
-  })
-)
-
-router.post('/refresh',
-  Controller( async (req: Request) => {
-    const refreshDto = await validateDTO(RefreshDTO, req.body)
-    return  await authServie.refresh(refreshDto)
+    const userDto = await validateDTO(RegisterDTO, req.body.user)
+    const user: IUser = await usersService.create(userDto)
+    return { user }
   })
 )
 
 router.get('/me', authJwt, 
   Controller( async (req: Request) => {
-    return req.user
+    const user: IUser = req.user
+    return { user }
   })
 )
 

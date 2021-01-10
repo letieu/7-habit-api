@@ -1,6 +1,6 @@
 import { plainToClass } from 'class-transformer'
 import { validate } from 'class-validator'
-import { ValidateError } from '../utils/error'
+import { ValidateError } from './error'
 
 export async function validateDTO(DTO, data): Promise<any> {
     const dto = plainToClass(DTO, data) 

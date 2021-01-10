@@ -1,28 +1,26 @@
-import { IsNotEmpty } from 'class-validator'
+import {plainToClass} from 'class-transformer'
+import { IsDefined, IsNotEmpty, Min, validate } from 'class-validator'
 
 export class RegisterDTO {
     @IsNotEmpty()
+    @IsDefined()
+    email: string
+
+    @IsNotEmpty()
+    @IsDefined()
     username: string
 
     @IsNotEmpty()
+    @IsDefined()
     password: string
-
-    @IsNotEmpty()
-    confirm: string
 }
 
 export class LoginDTO {
     @IsNotEmpty()
-    username: string
+    @IsDefined()
+    email: string
 
     @IsNotEmpty()
+    @IsDefined()
     password: string
-}
-
-export class RefreshDTO {
-    @IsNotEmpty()
-    username: string
-
-    @IsNotEmpty()
-    refresh_token: string
 }

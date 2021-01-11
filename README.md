@@ -75,8 +75,8 @@ router.post('/login',
 
   // All error throw in Controller, Service will be catch in error Middleware auto
   Controller( async (req: Request) => {
-    const loginDto       = await validateDTO(LoginDTO, req.body.user)
-    const user: ResAuth  = await authService.login(loginDto)
+    const loginDto: LoginDTO    = await validateDTO(LoginDTO, req.body.user)
+    const user:     ResAuth     = await authService.login(loginDto)
     return { user }
   }, 200)
 )
@@ -84,8 +84,8 @@ router.post('/login',
 router.post('/register',
 
   Controller( async (req: Request) => {
-    const userDto        = await validateDTO(RegisterDTO, req.body.user)
-    const user: IUser    = await usersService.create(userDto)
+    const userDto: RegisterDTO   = await validateDTO(RegisterDTO, req.body.user)
+    const user:    IUser         = await usersService.create(userDto)
     return { user }
   })
 )

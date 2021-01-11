@@ -1,13 +1,11 @@
 import * as jwt from 'jsonwebtoken'
 import config from '../config'
+import {Id} from '../types/base.type'
 
-export function getTokens(id: string, username: string) {
-    const access_token = jwt.sign({ id, username }, config.jwtSecet, { expiresIn: '1h' })
-    const refresh_token = jwt.sign({ id, username }, config.jwtSecet, { expiresIn: '1d' })
-    return {
-        access_token,
-        refresh_token
-    }
+export function getTokens(id: Id) {
+    const access_token = jwt.sign({ id }, config.jwtSecet, { expiresIn: '1h' })
+    //const refresh_token = jwt.sign({ id }, config.jwtSecet, { expiresIn: '1d' })
+    return access_token
 }
 
 export function verify(refresh_token: string): any {

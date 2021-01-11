@@ -1,41 +1,35 @@
 import { Router } from 'express'
-import { LoginDTO, RefreshDTO, RegisterDTO } from '../dtos/user.dto'
-import { UsersService, AuthService } from '../services'
-import { validateDTO } from '../utils/validate'
-
-const userService = new UsersService()
-const authServie = new AuthService()
+import { LoginDTO, RegisterDTO } from '../dtos/user.dto'
+import { authJwt } from '../middlewares'
+import { usersService, authService } from '../services'
+import { validateDTO } from '../core/validate'
+import { Controller } from '../core/controller'
+import { Request } from 'express'
+import {IUser, ResAuth} from '../types/user.type'
 
 const router = Router()
 
-router.post('/register', async (req, res, next) => {
-    try {
-        const userDto = await validateDTO(RegisterDTO, req.body)
-        const user = await userService.create(userDto)
-        res.json(user)
-    } catch (e) {
-        next(e)
-    }
-})
+router.post('/login',
+  Controller( async (req: Request) => {
+    const loginDto = await validateDTO(LoginDTO, req.body.user)
+    const user: ResAuth = await authService.login(loginDto)
+    return { user }
+  }, 200)
+)
 
-router.post('/login', async (req, res, next) => {
-    try {
-        const loginDto = await validateDTO(LoginDTO, req.body)
-        const auth = await authServie.login(loginDto)
-        res.json(auth)
-    } catch (e) {
-        next(e)
-    }
-})
+router.post('/register',
+  Controller( async (req: Request) => {
+    const userDto = await validateDTO(RegisterDTO, req.body.user)
+    const user: IUser = await usersService.create(userDto)
+    return { user }
+  })
+)
 
-router.post('/refresh', async (req, res, next) => {
-    try {
-        const refreshDto = await validateDTO(RefreshDTO, req.body)
-        const access_token = await authServie.refresh(refreshDto)
-        res.json(access_token)
-    } catch (e) {
-        next(e)
-    }
-})
+router.get('/me', authJwt, 
+  Controller( async (req: Request) => {
+    const user: IUser = req.user
+    return { user }
+  })
+)
 
 export default router

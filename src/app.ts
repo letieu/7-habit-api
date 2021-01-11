@@ -27,10 +27,8 @@ export default class App {
 
     public route () {
         this.app.use('/api', this.router)
-        this.app.use(errorMiddleware)
-    }
 
-    public connect () {
-         
+        // use at last
+        this.app.use(errorMiddleware)
     }
 }

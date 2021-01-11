@@ -52,3 +52,52 @@ yarn dev
     └── jwt.utils.ts
     
 ```
+
+### feature
+😈 Simple
+🔏 Jwt login, register
+🚀 Best error handle
+💎 Best validate use class-validator
+📁 Best folder structure
+
+### Define controller
+
+```javascript
+// import ....  method, DTO, Service, Class ......
+
+const router = Router()
+
+router.post('/login',
+
+  Controller( async (req: Request) => {
+    const loginDto = await validateDTO(LoginDTO, req.body.user)
+    const user: ResAuth = await authService.login(loginDto)
+    return { user }
+  }, 200)
+)
+
+router.post('/register',
+
+  Controller( async (req: Request) => {
+    const userDto = await validateDTO(RegisterDTO, req.body.user)
+    const user: IUser = await usersService.create(userDto)
+    return { user }
+  })
+)
+
+router.get('/me', authJwt, 
+
+  Controller( async (req: Request) => {
+    const user: IUser = req.user
+    return { user }
+  })
+)
+
+export default router
+```
+
+
+
+
+
+

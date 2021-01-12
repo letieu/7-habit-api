@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { BadRequest } from '../core/error'
 import {User} from '../models/user.model'
 import { IUser } from '../types/user.type'
 import { verify } from '../utils/jwt.utils'
@@ -15,7 +14,7 @@ export const authJwt = async (req: Request, res: Response, next) => {
           req.user = user
           next()
         } catch (e) {
-          res.status(401).send(e.message)
+          res.status(401).json(e)
         }
     } else {
         res.sendStatus(401)

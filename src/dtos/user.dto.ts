@@ -1,5 +1,4 @@
-import {plainToClass} from 'class-transformer'
-import { IsDefined, IsNotEmpty, Min, validate } from 'class-validator'
+import { IsDefined, IsNotEmpty, Min } from 'class-validator'
 
 export class RegisterDTO {
     @IsNotEmpty()

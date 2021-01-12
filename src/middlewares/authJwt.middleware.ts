@@ -9,14 +9,14 @@ export const authJwt = async (req: Request, res: Response, next) => {
     
     if (authHeader) {
         const token = authHeader.split(' ')[1]
-        const jwtPayload = verify(token)
-        if (!jwtPayload) {
-            throw new BadRequest('token not match')
+        try {
+          const jwtPayload = verify(token)
+          const user: IUser = await User.findOne({_id: jwtPayload.id})
+          req.user = user
+          next()
+        } catch (e) {
+          res.status(401).send(e.message)
         }
-
-        const user: IUser = await User.findOne({_id: jwtPayload.id})
-        req.user = user
-        next()
     } else {
         res.sendStatus(401)
     }

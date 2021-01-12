@@ -12,7 +12,7 @@ export abstract class Service {
         return newRow
     }
 
-    async delete(id: string): Promise<any> {
+    async delete(id: string, ...args): Promise<any> {
         return await this.model.deleteOne({ id })
     }
 

@@ -71,28 +71,26 @@ yarn dev
 
 const router = Router()
 
-router.post('/login',
-
-  // All error throw in Controller, Service will be catch in error Middleware auto
-  Controller( async (req: Request) => {
+router.post('/login', Controller( async (req: Request) => 
+  {
+    // All error throw in Controller, Service will be catch in error Middleware auto
     const loginDto: LoginDTO    = await validateDTO(LoginDTO, req.body.user)
     const user:     ResAuth     = await authService.login(loginDto)
+    
     return { user }
   }, 200)
 )
 
-router.post('/register',
-
-  Controller( async (req: Request) => {
+router.post('/register', Controller( async (req: Request) => 
+  {
     const userDto: RegisterDTO   = await validateDTO(RegisterDTO, req.body.user)
     const user:    IUser         = await usersService.create(userDto)
     return { user }
   })
 )
 
-router.get('/me', authJwt, 
-
-  Controller( async (req: Request) => {
+router.get('/me', authJwt, Controller( async (req: Request) => 
+  {
     const user: IUser = req.user
     return { user }
   })
